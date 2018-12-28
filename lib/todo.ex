@@ -45,13 +45,26 @@ defmodule Todo do
     key
   end
 
-  def list() do
-    list(false)
+  def archive(key) do
+    {:atomic, :ok} = Mnesia.transaction fn ->
+      [{@table, ^key, text, is_done, is_archived}] = Mnesia.read(@table, key)
+      Mnesia.write({@table, key, text, is_done, true})
+    end
+    key
   end
 
-  def list(all) do
-    Mnesia.transaction fn ->
-      # Mnesia.select(:todo, )
-    end
+  def list() do
+    list(all: false)
   end
+
+  def list(opts) do
+    {:atomic, rows} = Mnesia.transaction fn ->
+      Mnesia.select(@table, [{:"_", [], [:"$_"]}])
+    end
+    if !Keyword.get(opts, :all) do
+      rows = rows |> Enum.filter(fn(row={_,_,_,_,is_archived}) -> !is_archived end)
+    end
+    rows
+  end
+
 end

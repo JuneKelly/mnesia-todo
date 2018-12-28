@@ -1,21 +1,28 @@
-# Todo
+# Mnesia-Todo
 
-**TODO: Add description**
+A simple demo of Elixir and Mnesia, implementing a todo-list.
 
-## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `todo` to your list of dependencies in `mix.exs`:
+## Running
 
-```elixir
-def deps do
-  [
-    {:todo, "~> 0.1.0"}
-  ]
-end
+```shell
+$ iex -S mix
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/todo](https://hexdocs.pm/todo).
 
+## Example
+
+```elixir
+key = Todo.add("wash the dishes")
+# = >"L33DAXT3KLW7BBT6"
+
+Todo.show(key)
+
+Todo.done(key)
+
+Todo.archive(key)
+
+Todo.list()
+
+Todo.list(all: true)
+```
